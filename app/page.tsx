@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface LoginForm {
   username: string;
@@ -15,7 +16,8 @@ interface LoginForm {
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
-  
+  const router = useRouter();
+
   const form = useForm<LoginForm>({
     defaultValues: {
       username: "",
@@ -27,152 +29,174 @@ export default function LoginPage() {
     setIsLoading(true);
     // Simulate login process
     setTimeout(() => {
-      console.log("تسجيل الدخول:", data);
-      alert("تم تسجيل الدخول بنجاح!");
+      console.log("Connexion:", data);
+       router.push("/dashboard");
+    
       setIsLoading(false);
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4" dir="rtl">
-      <div className="w-full max-w-md">
-        {/* Header with Logos */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center items-center gap-4 mb-6">
-            <Image
-              src="/tunisien goverment.png"
-              alt="الحكومة التونسية"
-              width={80}
-              height={80}
-              className="object-contain"
-            />
-            <Image
-              src="/minister des finanaces.png"
-              alt="وزارة المالية"
-              width={80}
-              height={80}
-              className="object-contain"
-            />
-            <Image
-              src="/rnta.png"
-              alt="RNTA"
-              width={80}
-              height={80}
-              className="object-contain"
-            />
-          </div>
-          
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            تابك لتحسين النفايات الصناعية
-          </h1>
-          <p className="text-gray-600">
-            نظام إدارة النفايات الصناعية والتحسين البيئي
-          </p>
-        </div>
-
-        {/* Login Form */}
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-              تسجيل الدخول
-            </h2>
-            <p className="text-gray-600">
-              أدخل بياناتك للوصول إلى النظام
-            </p>
+    <div className="min-h-screen flex" dir="ltr">
+      {/* Left Side - Login Form */}
+      <div className="w-1/2 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-8">
+        <div className="w-full max-w-md">
+          {/* Header with Logos */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center items-center gap-4 mb-6">
+              <Image
+                src="/tunisien goverment.png"
+                alt="Gouvernement Tunisien"
+                width={60}
+                height={60}
+                className="object-contain"
+              />
+              <Image
+                src="/minister des finanaces.png"
+                alt="Ministère des Finances"
+                width={60}
+                height={60}
+                className="object-contain"
+              />
+              <Image
+                src="/rnta.png"
+                alt="RNTA"
+                width={60}
+                height={60}
+                className="object-contain"
+              />
+            </div>
+            
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+           Systeme intégré de gestion des déchets (SIGD-RNTA)
+            </h1>
+         
           </div>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="username"
-                rules={{
-                  required: "اسم المستخدم مطلوب",
-                  minLength: {
-                    value: 3,
-                    message: "اسم المستخدم يجب أن يكون 3 أحرف على الأقل"
-                  }
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-right block">
-                      اسم المستخدم
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="أدخل اسم المستخدم"
-                        className="text-right"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" />
-                  </FormItem>
-                )}
-              />
+          {/* Login Form */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Connexion
+              </h2>
+              <p className="text-gray-600 text-sm">
+                Entrez vos identifiants pour accéder au système
+              </p>
+            </div>
 
-              <FormField
-                control={form.control}
-                name="password"
-                rules={{
-                  required: "كلمة المرور مطلوبة",
-                  minLength: {
-                    value: 6,
-                    message: "كلمة المرور يجب أن تكون 6 أحرف على الأقل"
-                  }
-                }}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-right block">
-                      كلمة المرور
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="أدخل كلمة المرور"
-                        className="text-right"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-right" />
-                  </FormItem>
-                )}
-              />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  rules={{
+                    required: "Le nom d'utilisateur est requis",
+                    minLength: {
+                      value: 3,
+                      message: "Le nom d'utilisateur doit contenir au moins 3 caractères"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-left block">
+                        Nom d'utilisateur
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Entrez votre nom d'utilisateur"
+                          className="text-left"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-left" />
+                    </FormItem>
+                  )}
+                />
 
-              <div className="flex items-center justify-between">
-                <a
-                  href="#"
-                  className="text-sm text-blue-600 hover:text-blue-500"
+                <FormField
+                  control={form.control}
+                  name="password"
+                  rules={{
+                    required: "Le mot de passe est requis",
+                    minLength: {
+                      value: 6,
+                      message: "Le mot de passe doit contenir au moins 6 caractères"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-left block">
+                        Mot de passe
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Entrez votre mot de passe"
+                          className="text-left"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-left" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex items-center justify-between">
+                  <a
+                    href="#"
+                    className="text-sm text-blue-600 hover:text-blue-500"
+                  >
+                    Mot de passe oublié?
+                  </a>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
+                  disabled={isLoading}
                 >
-                  نسيت كلمة المرور؟
+                  {isLoading ? "Connexion en cours..." : "Se connecter"}
+                </Button>
+              </form>
+            </Form>
+
+            <div className="mt-4 text-center">
+              <p className="text-sm text-gray-600">
+                Vous n'avez pas de compte?{" "}
+                <a href="#" className="text-blue-600 hover:text-blue-500 font-medium">
+                  Contacter l'administration
                 </a>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors"
-                disabled={isLoading}
-              >
-                {isLoading ? "جاري تسجيل الدخول..." : "تسجيل الدخول"}
-              </Button>
-            </form>
-          </Form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              لا تملك حساب؟{" "}
-              <a href="#" className="text-blue-600 hover:text-blue-500 font-medium">
-                تواصل مع الإدارة
-              </a>
-            </p>
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center mt-8 text-sm text-gray-500">
-          <p>© 2024 تابك لتحسين النفايات الصناعية</p>
-          <p>جميع الحقوق محفوظة - الجمهورية التونسية</p>
+          {/* Footer */}
+          <div className="text-center mt-6 text-xs text-gray-500">
+            <p>© 2024 Usine d'Optimisation des Déchets de Tabac</p>
+            <p>Tous droits réservés - République Tunisienne</p>
+          </div>
         </div>
       </div>
+
+      {/* Right Side - Tobacco Manufacturing */}
+       <div className="w-1/2 bg-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-l from-black/50 to-transparent z-10"></div>
+        <Image
+          src="/tabac.jpg"
+          alt="Tobacco Manufacturing"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="text-center text-white p-8">
+            <h2 className="text-4xl font-bold mb-4">Usine de Tabac</h2>
+            <p className="text-xl opacity-90">Optimisation des Processus Industriels</p>
+            <p className="text-lg opacity-75 mt-2">Gestion des Déchets et Durabilité Environnementale</p>
+          </div>
+        </div>
+      </div>
+     
     </div>
   );
 }

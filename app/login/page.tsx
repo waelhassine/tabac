@@ -68,11 +68,9 @@ export default function LoginPage() {
             </div>
             
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Usine d'Optimisation des Déchets de Tabac
+           Systeme intégré de gestion des déchets (SIGD-RNTA)
             </h1>
-            <p className="text-gray-600 text-sm">
-              Système de gestion des déchets industriels et d'amélioration environnementale
-            </p>
+         
           </div>
 
           {/* Login Form */}

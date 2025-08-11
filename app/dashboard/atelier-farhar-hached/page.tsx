@@ -1,79 +1,305 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
-export default function AtelierFarharHachedPage() {
+type FormData = {
+  consommationScaferlati: string;
+  stockCigarettes: string;
+  cigarettesEnvoyeesQuantite: string;
+  cigarettesEnvoyeesDestination: string;
+  cigarettesRecuesQuantite: string;
+  cigarettesRecuesSource: string;
+  poidsCigarette: string;
+  productionPaquets: string;
+  dechireuse: string;
+  typeDechetsBoudins: string;
+  typeDechetsQuantite: string;
+  dateReintroduction: string;
+  depoussierage: string;
+  quantitePoussiere: string;
+};
+
+export default function CreateAtelierFarharHachedPage() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const form = useForm<FormData>({
+    defaultValues: {
+      consommationScaferlati: '',
+      stockCigarettes: '',
+      cigarettesEnvoyeesQuantite: '',
+      cigarettesEnvoyeesDestination: '',
+      cigarettesRecuesQuantite: '',
+      cigarettesRecuesSource: '',
+      poidsCigarette: '',
+      productionPaquets: '',
+      dechireuse: '',
+      typeDechetsBoudins: '',
+      typeDechetsQuantite: '',
+      dateReintroduction: '',
+      depoussierage: '',
+      quantitePoussiere: '',
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    console.log('Form data submitted:', data);
+    
+    // Redirect back to atelier page
+    router.push('/dashboard/atelier-farhar-hached');
+  };
 
   return (
     <div className="p-6">
-      <div className="mb-6 flex justify-between items-start">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Atelier Farhar Hached
-          </h1>
-          <p className="text-gray-600">
-            Gestion et monitoring de l'Atelier Farhar Hached - Zone A
-          </p>
-        </div>
-        <Button 
-          onClick={() => router.push('/dashboard/atelier-farhar-hached/create')}
-          className="bg-blue-600 hover:bg-blue-700"
-        >
-          Créer Nouvelle Entrée
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="font-medium text-gray-900 mb-2">Statut Production</h3>
-          <p className="text-2xl font-bold text-yellow-600">Maintenance</p>
-          <p className="text-sm text-gray-500 mt-1">Depuis 10:00</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="font-medium text-gray-900 mb-2">Déchets Traités</h3>
-          <p className="text-2xl font-bold text-blue-600">0 kg</p>
-          <p className="text-sm text-gray-500 mt-1">Aujourd'hui</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-sm border">
-          <h3 className="font-medium text-gray-900 mb-2">Efficacité</h3>
-          <p className="text-2xl font-bold text-gray-400">--</p>
-          <p className="text-sm text-gray-500 mt-1">Hors service</p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          Créer Nouvelle Entrée - Atelier Farhar Hached
+        </h1>
+        <p className="text-gray-600">
+          Saisie des données de production pour l'Atelier Farhar Hached
+        </p>
       </div>
 
       <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Détails de l'Atelier Farhar Hached</h2>
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-            <p className="text-yellow-800 font-medium">Atelier en maintenance programmée</p>
-          </div>
-          <p className="text-yellow-700 text-sm mt-1">Retour en service prévu: 14:00</p>
-        </div>
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Température</label>
-              <p className="text-lg font-semibold text-gray-400">--</p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="consommationScaferlati"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Consommation scaferlati en KG</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Entrez la consommation en KG" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="stockCigarettes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stock en Cours de Cigarettes</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Entrez le stock actuel" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="cigarettesEnvoyeesQuantite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cigarettes envoyées - Quantité</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Quantité" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cigarettesEnvoyeesDestination"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cigarettes envoyées - Destination</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Destination" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Humidité</label>
-              <p className="text-lg font-semibold text-gray-400">--</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="cigarettesRecuesQuantite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cigarettes reçues - Quantité</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Quantité" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="cigarettesRecuesSource"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cigarettes reçues - Source</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Source" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Pression</label>
-              <p className="text-lg font-semibold text-gray-400">--</p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="poidsCigarette"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Poids de cigarette en Kg</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Poids en Kg" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="productionPaquets"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Production en paquets</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nombre de paquets" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Débit</label>
-              <p className="text-lg font-semibold text-gray-400">--</p>
+
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Suivi de récupération - Déchireuse</h3>
+              
+              <FormField
+                control={form.control}
+                name="dechireuse"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Déchireuse (Farhat Hached)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Informations déchireuse" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <FormField
+                  control={form.control}
+                  name="typeDechetsBoudins"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type de déchets traités (Boudins/Cigarettes)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Type de déchets" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="typeDechetsQuantite"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantité traitée en KG</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Quantité en KG" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="dateReintroduction"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Date de réintroduction</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div>
-        </div>
+
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Dépoussiérage ou Uni Mater</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="depoussierage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dépoussiérage</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Informations dépoussiérage" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="quantitePoussiere"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantité de poussière en KG</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Quantité en KG" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-6">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push('/dashboard/atelier-farhar-hached')}
+              >
+                Annuler
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   );

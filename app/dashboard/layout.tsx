@@ -14,9 +14,10 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+  
   {
     id: "zone-a",
-    label: "Zone A",
+    label: "Usine A",
     path: "/dashboard",
     subItems: [
       { id: "atelier-vmi-1", label: "Atelier VMI 1", path: "/dashboard/atelier-vmi-1" },
@@ -26,7 +27,7 @@ const menuItems: MenuItem[] = [
   },
   {
     id: "zone-b",
-    label: "Zone B",
+    label: "Usine B",
     path: "/dashboard",
     subItems: [
       { id: "pg", label: "PG", path: "/dashboard/pg" },
@@ -92,7 +93,7 @@ export default function DashboardLayout({
             </div>
             <Separator orientation="vertical" className="h-8" />
             <h1 className="text-xl font-semibold text-gray-900">
-              Usine d'Optimisation des Déchets de Tabac
+              Systeme intégré de gestion des déchets (SIGD-RNTA)
             </h1>
           </div>
           
