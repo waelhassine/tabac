@@ -190,9 +190,8 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 z-20 flex items-center justify-center">
           <div className="text-center text-white p-8">
-            <h2 className="text-4xl font-bold mb-4">Usine de Tabac</h2>
-            <p className="text-xl opacity-90">Optimisation des Processus Industriels</p>
-            <p className="text-lg opacity-75 mt-2">Gestion des Déchets et Durabilité Environnementale</p>
+            <h2 className="text-4xl font-bold mb-4">Régle Nationale des tabacs et des Allumettes</h2>
+          
           </div>
         </div>
       </div>

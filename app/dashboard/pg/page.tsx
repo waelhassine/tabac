@@ -17,7 +17,7 @@ export default function PGPage() {
             PG - Gestion des Processus
           </h1>
           <p className="text-gray-600">
-            Centre de contrôle et gestion des processus - Zone B
+            Centre de contrôle et gestion des processus - Usine B
           </p>
         </div>
         <button

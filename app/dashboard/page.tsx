@@ -170,11 +170,11 @@ export default function DashboardPage() {
                   </tr>
                   <tr className="bg-gray-50">
                     <td className="p-2 border pl-6"></td>
-                    <td className="p-2 border">Quantité de poussière récupérée : 15 kg</td>
+                    <td className="p-2 border">Quantité de poussière : 15 kg</td>
                   </tr>
                   <tr>
                     <td className="p-2 border pl-6">→ Dépoussiérage</td>
-                    <td className="p-2 border">Quantité de poussière récupérée : 22 kg</td>
+                    <td className="p-2 border">Quantité de poussière : 22 kg</td>
                   </tr>
                 </tbody>
               </table>
@@ -422,7 +422,7 @@ export default function DashboardPage() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="font-medium text-gray-900 mb-2">Zone A - Usine A</h3>
+            <h3 className="font-medium text-gray-900 mb-2"> Usine A</h3>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>• Atelier VMI 1 - Production principale</li>
               <li>• Atelier VMI 2 - Production secondaire</li>
@@ -430,7 +430,7 @@ export default function DashboardPage() {
             </ul>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900 mb-2">Zone B - Usine B</h3>
+            <h3 className="font-medium text-gray-900 mb-2">Usine B</h3>
             <ul className="text-sm text-gray-600 space-y-1">
               <li>• PG - Préparations Générales</li>
               <li>• Atelier VML 1 - Ligne de production 1</li>

@@ -1,305 +1,173 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
-type FormData = {
-  consommationScaferlati: string;
-  stockCigarettes: string;
-  cigarettesEnvoyeesQuantite: string;
+interface AtelierData {
+  consommationScaferlati: number;
+  stockCigarettes: number;
+  cigarettesEnvoyeesQuantite: number;
   cigarettesEnvoyeesDestination: string;
-  cigarettesRecuesQuantite: string;
+  cigarettesRecuesQuantite: number;
   cigarettesRecuesSource: string;
-  poidsCigarette: string;
-  productionPaquets: string;
+  poidsCigarette: number;
+  productionPaquets: number;
   dechireuse: string;
   typeDechetsBoudins: string;
-  typeDechetsQuantite: string;
+  typeDechetsQuantite: number;
   dateReintroduction: string;
   depoussierage: string;
-  quantitePoussiere: string;
-};
+  quantitePoussiere: number;
+}
 
-export default function CreateAtelierFarharHachedPage() {
-  const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+function generateRandomData(): AtelierData {
+  const destinations = ['Atelier VMI 1', 'Atelier VMI 2', 'Atelier VML 1', 'Atelier VML 2', 'Stock Principal'];
+  const sources = ['Atelier PG', 'Atelier VMI 1', 'Atelier VMI 2', 'Stock Externe', 'Production Interne'];
+  const dechireuseTypes = ['FH-A', 'FH-B', 'FH-C'];
+  const dechetTypes = ['Boudins', 'Cigarettes défectueuses', 'Résidus de production', 'Déchets de coupe'];
+  const depoussiérageTypes = ['Uni Mater A', 'Uni Mater B', 'Système Standard', 'Système Farhar'];
   
-  const form = useForm<FormData>({
-    defaultValues: {
-      consommationScaferlati: '',
-      stockCigarettes: '',
-      cigarettesEnvoyeesQuantite: '',
-      cigarettesEnvoyeesDestination: '',
-      cigarettesRecuesQuantite: '',
-      cigarettesRecuesSource: '',
-      poidsCigarette: '',
-      productionPaquets: '',
-      dechireuse: '',
-      typeDechetsBoudins: '',
-      typeDechetsQuantite: '',
-      dateReintroduction: '',
-      depoussierage: '',
-      quantitePoussiere: '',
-    },
-  });
-
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    console.log('Form data submitted:', data);
-    
-    // Redirect back to atelier page
-    router.push('/dashboard/atelier-farhar-hached');
+  const today = new Date();
+  const randomDate = new Date(today.getTime() - Math.random() * 7 * 24 * 60 * 60 * 1000);
+  
+  return {
+    consommationScaferlati: Math.round((Math.random() * 600 + 150) * 100) / 100,
+    stockCigarettes: Math.round(Math.random() * 12000 + 6000),
+    cigarettesEnvoyeesQuantite: Math.round(Math.random() * 3500 + 1200),
+    cigarettesEnvoyeesDestination: destinations[Math.floor(Math.random() * destinations.length)],
+    cigarettesRecuesQuantite: Math.round(Math.random() * 2500 + 600),
+    cigarettesRecuesSource: sources[Math.floor(Math.random() * sources.length)],
+    poidsCigarette: Math.round((Math.random() * 2.2 + 0.6) * 1000) / 1000,
+    productionPaquets: Math.round(Math.random() * 6000 + 2500),
+    dechireuse: dechireuseTypes[Math.floor(Math.random() * dechireuseTypes.length)],
+    typeDechetsBoudins: dechetTypes[Math.floor(Math.random() * dechetTypes.length)],
+    typeDechetsQuantite: Math.round((Math.random() * 60 + 15) * 100) / 100,
+    dateReintroduction: randomDate.toISOString().split('T')[0],
+    depoussierage: depoussiérageTypes[Math.floor(Math.random() * depoussiérageTypes.length)],
+    quantitePoussiere: Math.round((Math.random() * 25 + 8) * 100) / 100
   };
+}
+
+export default function AtelierFarharHachedPage() {
+  const router = useRouter();
+  const [data, setData] = useState<AtelierData | null>(null);
+
+  useEffect(() => {
+    setData(generateRandomData());
+  }, []);
+
+  if (!data) {
+    return <div className="p-6">Chargement...</div>;
+  }
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Créer Nouvelle Entrée - Atelier Farhar Hached
-        </h1>
-        <p className="text-gray-600">
-          Saisie des données de production pour l'Atelier Farhar Hached
-        </p>
+      <div className="mb-6 flex justify-between items-start">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Atelier Farhar Hached
+          </h1>
+          <p className="text-gray-600">
+            Gestion et monitoring de l'Atelier Farhar Hached - Zone Spécialisée
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => setData(generateRandomData())}
+            variant="outline"
+            className="border-blue-600 text-blue-600 hover:bg-blue-50"
+          >
+            Actualiser Données
+          </Button>
+          <Button 
+            onClick={() => router.push('/dashboard/atelier-farhar-hached/create')}
+            className="bg-blue-600 hover:bg-blue-700"
+          >
+            Créer Nouvelle Entrée
+          </Button>
+        </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h3 className="font-medium text-gray-900 mb-2">Statut Production</h3>
+          <p className="text-2xl font-bold text-green-600">Actif</p>
+          <p className="text-sm text-gray-500 mt-1">Depuis 07:45</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h3 className="font-medium text-gray-900 mb-2">Production Paquets</h3>
+          <p className="text-2xl font-bold text-blue-600">{data.productionPaquets.toLocaleString()}</p>
+          <p className="text-sm text-gray-500 mt-1">Aujourd'hui</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h3 className="font-medium text-gray-900 mb-2">Consommation Scaferlati</h3>
+          <p className="text-2xl font-bold text-purple-600">{data.consommationScaferlati} kg</p>
+          <p className="text-sm text-gray-500 mt-1">Aujourd'hui</p>
+        </div>
+      </div>
+
+      {/* Production Data */}
+      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Données de Production</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Stock en Cours de Cigarettes</label>
+            <p className="text-lg font-semibold text-gray-900">{data.stockCigarettes.toLocaleString()}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Poids de cigarette</label>
+            <p className="text-lg font-semibold text-gray-900">{data.poidsCigarette} kg</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cigarettes Envoyées</label>
+            <p className="text-lg font-semibold text-gray-900">{data.cigarettesEnvoyeesQuantite.toLocaleString()}</p>
+            <p className="text-sm text-gray-500">vers {data.cigarettesEnvoyeesDestination}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Cigarettes Reçues</label>
+            <p className="text-lg font-semibold text-gray-900">{data.cigarettesRecuesQuantite.toLocaleString()}</p>
+            <p className="text-sm text-gray-500">de {data.cigarettesRecuesSource}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Waste Recovery Data */}
+      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Suivi de récupération - Déchireuse</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Déchireuse</label>
+            <p className="text-lg font-semibold text-gray-900">{data.dechireuse}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Type de déchets traités</label>
+            <p className="text-lg font-semibold text-gray-900">{data.typeDechetsBoudins}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Quantité traitée</label>
+            <p className="text-lg font-semibold text-gray-900">{data.typeDechetsQuantite} kg</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Date de réintroduction</label>
+            <p className="text-lg font-semibold text-gray-900">{new Date(data.dateReintroduction).toLocaleDateString('fr-FR')}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Dust Removal Data */}
       <div className="bg-white rounded-lg shadow-sm border p-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="consommationScaferlati"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Consommation scaferlati en KG</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Entrez la consommation en KG" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="stockCigarettes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Stock en Cours de Cigarettes</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Entrez le stock actuel" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="cigarettesEnvoyeesQuantite"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cigarettes envoyées - Quantité</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Quantité" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cigarettesEnvoyeesDestination"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cigarettes envoyées - Destination</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Destination" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="cigarettesRecuesQuantite"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cigarettes reçues - Quantité</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Quantité" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cigarettesRecuesSource"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cigarettes reçues - Source</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Source" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="poidsCigarette"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Poids de cigarette en Kg</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Poids en Kg" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="productionPaquets"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Production en paquets</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Nombre de paquets" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Suivi de récupération - Déchireuse</h3>
-              
-              <FormField
-                control={form.control}
-                name="dechireuse"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Déchireuse (Farhat Hached)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Informations déchireuse" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                <FormField
-                  control={form.control}
-                  name="typeDechetsBoudins"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type de déchets traités (Boudins/Cigarettes)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Type de déchets" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="typeDechetsQuantite"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Quantité traitée en KG</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Quantité en KG" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="dateReintroduction"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Date de réintroduction</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Dépoussiérage ou Uni Mater</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="depoussierage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dépoussiérage</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Informations dépoussiérage" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="quantitePoussiere"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Quantité de poussière en KG</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Quantité en KG" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-4 pt-6">
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => router.push('/dashboard/atelier-farhar-hached')}
-              >
-                Annuler
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Dépoussiérage ou Uni Mater</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Système de Dépoussiérage</label>
+            <p className="text-lg font-semibold text-gray-900">{data.depoussierage}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Quantité de poussière</label>
+            <p className="text-lg font-semibold text-gray-900">{data.quantitePoussiere} kg</p>
+          </div>
+        </div>
       </div>
     </div>
   );
